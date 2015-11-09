@@ -17,13 +17,13 @@
         <pagination id="my-table" class="pull-right"></pagination>
       </div>
       </div>
-      <grid rows="{{gridData}}" columns="{{gridColumns}}" filter-key="{{searchQuery}}" per-page="5" id="my-table"></grid>
+      <grid :rows="gridData" :columns="gridColumns" :filter-key="searchQuery" :per-page="5" id="my-table"></grid>
       <hr>
-      <grid rows="{{gridData2}}" columns="{{gridColumns2}}" per-page="10" id="another-table"></grid>
+      <grid :rows="gridData2" :columns="gridColumns2" :per-page="10" id="another-table"></grid>
       <pagination id="another-table"></pagination>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.1/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.7/vue.js"></script>
   <script src="../vue-grid.js"></script>
 <script>
 

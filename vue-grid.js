@@ -22,30 +22,25 @@
         '<table class="table">',
           '<thead>',
             '<tr>',
-              '<th v-repeat="column: columns" v-on="click:sortBy(column)" v-class="dropup: reversed[column]">',
+              '<th v-for="column in columns" v-on:click="sortBy(column)" v-bind:class="{ dropup: reversed[column] }">',
                 '{{column | capitalize}}',
-                '<span v-class="caret: sortColumn == column"></span>',
+                '<span v-bind:class="{ caret: sortColumn == column }"></span>',
               '</th>',
             '</tr>',
           '</thead>',
           '<tbody>',
-            '<tr v-repeat="row: currentPage | orderBy sortColumn reversed[sortColumn]">',
-              '<td v-repeat="column: columns">',
+            '<tr v-for="row in currentPage | orderBy sortColumn reversed[sortColumn]">',
+              '<td v-for="column in columns">',
                 '{{row[column]}}',
               '</td>',
             '</tr>',
           '</tbody>',
         '</table>'
       ].join(''),
-      props: ['rows', 'columns', 'filter-key', 'per-page', 'id'],
+      props: ['rows', 'columns', 'filter-key', 'per-page', 'id', 'sort-column'],
       data: function() {
         return {
-          rows: [],
-          columns: [],
-          sortColumn: '',
-          filterKey: '',
           reversed: {},
-          perPage: 10,
           pagination: null
         };
       },
@@ -62,12 +57,10 @@
       },
       compiled: function() {
         this.$data.pagination = util.getPaginationData(this.id);
-        this.$watch(function() {
-          this.pagination.pageCount = Math.ceil(this.filteredRows.length / this.perPage);
-        });
+        this.pagination.pageCount = Math.ceil(this.filteredRows.length / this.perPage);
         var self = this;
         this.columns.forEach(function(column) {
-          self.reversed.$add(column, false);
+          self.reversed[column] = false;
         })
       },
       methods: {
@@ -84,13 +77,13 @@
         '<nav>',
           '<ul class="pagination">',
             '<li>',
-              '<a href="#" aria-label="Previous" v-on="click: prev">',
+              '<a href="#" aria-label="Previous" v-on:click="prev">',
                 '<span aria-hidden="true">&laquo;</span>',
               '</a>',
             '</li>',
-            '<li v-repeat="pageCount" v-class="active: isCurrent($index)"><a href="#" v-on="click: this.page = $index">{{$index+1}}</a></li>',
+            '<li v-for="dummy in pageCount" v-bind:class="{ active: isCurrent($index) }"><a href="#" v-on:click="page = $index">{{$index+1}}</a></li>',
             '<li>',
-              '<a href="#" aria-label="Next" v-on="click: next">',
+              '<a href="#" aria-label="Next" v-on:click="next">',
                 '<span aria-hidden="true">&raquo;</span>',
               '</a>',
             '</li>',
